@@ -1,0 +1,16 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "args": ["orasenatdhubsred01", "--compartment_id", "ocid1.compartment.oc1..aaaaaaaae4364npm55dpakr5e6sfpce5su2nhj6ane27344cjsvgb2e5lkra", "--boot_volume_id", "ocid1.bootvolume.oc1.iad.abuwcljrylptc6c6jonxnpaqaeys5vk2znynwfbzlvmkkwooh5iecxyb2ntq"]
+        }
+    ]
+}
