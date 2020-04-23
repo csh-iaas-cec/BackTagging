@@ -31,7 +31,6 @@ class Compartment:
 
 	def update_ads(self):
 		for i in self.list_availability_domain():
-			print(i)
 			self.availability_domain_list.append(i)
 
 	def get_compartment_name(self, ids):
