@@ -1,13 +1,12 @@
 import oci
 from oci.pagination import list_call_get_all_results
-from Config import Config
+import Config
 
 class Volume:
-    def __init__(self, tenancy):
-        config = Config(tenancy)
-        self.tenancy_name = tenancy
-        self.config = config.config
-        self.block_storage_client = oci.core.BlockstorageClient(self.config)
+    def __init__(self):
+        signer = Config.signer
+        config = {}
+        self.block_storage_client = oci.core.BlockstorageClient(config=config, signer=signer)
         
 
 
@@ -121,12 +120,3 @@ class Volume:
 
 
 
-if __name__== "__main__":
-    v = Volume("orasenatdhubsred01")
-    tag = {
-        "defined_tags":{},
-        "freeform_tags": {}
-    }
-    v.update_boot_volume_backup_tag("ocid1.bootvolumebackup.oc1.iad.abuwcljrjveworr7oepqnybcujrpn246yjs4b6o5rbef4bi43u4asar6f7na", tag)
-
-        

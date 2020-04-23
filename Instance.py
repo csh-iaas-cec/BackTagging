@@ -1,14 +1,13 @@
 from oci.core import ComputeClient
 from oci.exceptions import ServiceError
 from oci.pagination import list_call_get_all_results
-from Config import Config
+import Config
 
 class Instance:
-    def __init__(self, tenancy_name):
-        config = Config(tenancy_name)
-        self.tenancy_name = tenancy_name
-        self.config = config.config
-        self.compute_client = ComputeClient(self.config)
+    def __init__(self):
+        config = {}
+        signer = Config.signer
+        self.compute_client = ComputeClient(config = config, signer = signer)
 
     # Request to list all volume attachments
     def list_volume_attachments(self, compartment_id):

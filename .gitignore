@@ -1,0 +1,5 @@
+*.zip
+.vscode/*
+settings.json
+launch.json
+test2.py

@@ -4,8 +4,7 @@ from Compartment import Compartment
 from UniqueKeyDict import UniqueKeyDict
 
 class Store:
-    def __init__(self, tenancy, compartment_id=None):
-        self.tenancy_name = tenancy
+    def __init__(self, compartment_id=None):
         self.volume_attachments = list()
         self.boot_volume_attachments = list()
         self.database_tags = UniqueKeyDict()
@@ -21,10 +20,10 @@ class Store:
         self.database_backup_db = UniqueKeyDict()
         self.boot_volume_tags = UniqueKeyDict()
         self.compartment_id = compartment_id
-        self.instanceObj = Instance(tenancy)
-        self.volumeObj = Volume(tenancy)
+        self.instanceObj = Instance()
+        self.volumeObj = Volume()
         self.compartment_list = list()
-        self.compartment_obj = Compartment(self.tenancy_name)
+        self.compartment_obj = Compartment()
         self.initialize()
 
     def update_compartment_list(self):

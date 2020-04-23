@@ -1,15 +1,15 @@
-from Config import Config
+import Config
 import oci
 from oci.identity import IdentityClient
 
 
 # Gets all the compartments from a tenancy
 class Compartment:
-	def __init__(self,tenancy_name):
-		config = Config(tenancy_name)
-		self.config = config.config
-		self.compartment_id = self.config['tenancy']
-		self.identity = IdentityClient(self.config)
+	def __init__(self):
+		signer = Config.signer
+		self.config = {}
+		self.compartment_id = signer.tenancy_id
+		self.identity = IdentityClient(config = {}, signer = signer)
 		self.compartments = list()
 		self.compartments_id = list()
 		self.availability_domain_list = list()

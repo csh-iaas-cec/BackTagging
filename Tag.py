@@ -1,18 +1,12 @@
 import oci
-from Compartment import Compartment
-from Config import Config
 from Volume import Volume
 from Store import Store
 
 
 class Tag:
-    def __init__(self, tenancy_name, compartment_id=None):
-        config = Config(tenancy_name)
-        self.tenancy_name = tenancy_name
-        self.config = config.config
-        self.compartment_id = compartment_id
-        self.storeObj = Store(tenancy_name, compartment_id)
-        self.volumeObj = Volume(tenancy_name)
+    def __init__(self, compartment_id=None):
+        self.storeObj = Store(compartment_id)
+        self.volumeObj = Volume()
         self.initialize()
 
     def initialize(self):
