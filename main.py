@@ -22,9 +22,8 @@ if __name__ == "__main__":
     parser.add_argument('--boot_volume_backup_id',
                         help="Updates the boot volume and boot volume group tags from the given boot volume backup id")
     args = parser.parse_args()
-    tenancy_name = args.tenancy_name
     if(args.all):
-        tagObj = Tag(tenancy_name)
+        tagObj = Tag()
         tagObj.update_tags_from_compartment()
     else:
         if(args.compartment_id):
