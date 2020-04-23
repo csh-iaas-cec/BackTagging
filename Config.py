@@ -1,11 +1,11 @@
 import oci
-import ConfigParser
+import configparser
 
 
 # get the cloud shell delegated authentication token
 delegation_token = open('/etc/oci/delegation_token', 'r').read()
 
-configParser = ConfigParser.RawConfigParser()   
+configParser = configparser.RawConfigParser()   
 configFilePath = r'/etc/oci/config'
 configParser.read(configFilePath)
 
