@@ -7,9 +7,8 @@ from oci.identity import IdentityClient
 class Compartment:
 	def __init__(self):
 		self.signer = Config.signer
-		print(self.signer.tenancy_id)
 		self.config = {}
-		self.compartment_id = self.signer.tenancy_id
+		self.compartment_id = Config.tenancy_id
 		self.identity = IdentityClient(config = {}, signer = self.signer)
 		self.compartments = list()
 		self.availability_domain_list = list()
