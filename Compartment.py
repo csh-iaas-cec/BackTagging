@@ -40,3 +40,8 @@ class Compartment:
 	def get_compartment_id_list(self):
 		return self.compartments
 		
+
+
+if __name__ == "__main__":
+	comp = Compartment()
+	print(comp.availability_domain_list)
