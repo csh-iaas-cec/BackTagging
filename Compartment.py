@@ -8,7 +8,7 @@ class Compartment:
 	def __init__(self):
 		self.signer = Config.signer
 		self.config = {}
-		self.compartment_id = signer.tenancy_id
+		self.compartment_id = self.signer.tenancy_id
 		self.identity = IdentityClient(config = {}, signer = self.signer)
 		self.compartments = list()
 		self.availability_domain_list = list()
