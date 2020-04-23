@@ -8,7 +8,6 @@ if __name__ == "__main__":
     description = "\n".join(["This updates the tags of volumes and volume groups","pip install -r requirements.txt","python main.py <config_profile>"])
     parser = argparse.ArgumentParser(description=description,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("tenancy_name", help="Provide tenancy name")
     parser.add_argument("--all", help="Update all the tags in the tenancy", action="store_true")
     parser.add_argument('--compartment_id',
                         help="Updates all the volume and backups tag from instances in the specified compartment ")
@@ -30,7 +29,7 @@ if __name__ == "__main__":
     else:
         if(args.compartment_id):
             compartment_id = str(args.compartment_id)
-            tagObj = Tag(tenancy_name,compartment_id)
+            tagObj = Tag(compartment_id)
             if(args.instance_id):
                 instance_id = str(args.instance_id)
                 tagObj.update_tags_from_instance(instance_id)
@@ -49,4 +48,4 @@ if __name__ == "__main__":
             else:
                 tagObj.update_tags_from_compartment()
         else:
-            print("Please provide compartment ID. For further run --help")
+            print("Please provide compartment ID or --all. For further run --help")
