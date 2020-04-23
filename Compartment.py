@@ -27,7 +27,7 @@ class Compartment:
 
 
 	def list_availability_domain(self):
-		return self.identity.list_availability_domains(self.signer.tenancy_id).data
+		return self.identity.list_availability_domains(self.compartment_id).data
 
 	def update_ads(self):
 		for i in self.list_availability_domain():
