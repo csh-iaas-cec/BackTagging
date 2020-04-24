@@ -3,6 +3,7 @@ from Volume import Volume
 from Compartment import Compartment
 from UniqueKeyDict import UniqueKeyDict
 
+
 class Store:
     def __init__(self, compartment_id=None):
         self.volume_attachments = list()
@@ -31,7 +32,8 @@ class Store:
             self.compartment_list.append(self.compartment_id)
         else:
             self.compartment_obj.store_compartments()
-            self.compartment_list = [i.id for i in self.compartment_obj.compartments]
+            self.compartment_list = [
+                i.id for i in self.compartment_obj.compartments]
 
     def initialize(self):
         self.update_compartment_list()
@@ -55,7 +57,6 @@ class Store:
             print(identifier)
             print("Instance not present in the compartment")
             raise
-        
 
     def get_volume_tags(self, volume_id):
         try:
@@ -72,12 +73,10 @@ class Store:
             print("Volume Id Incorrect")
             print(boot_volume_id)
             raise KeyError
-        
 
-    
-
-    # Store the volume attachments so that we no need to request 
+    # Store the volume attachments so that we no need to request
     # each time to get the list of volume attachments
+
     def store_volume_attachments(self, compartment_id):
         for i in self.instanceObj.list_volume_attachments(compartment_id):
             self.volume_attachments.append(i)
@@ -103,25 +102,25 @@ class Store:
         for i in self.volume_backups:
             vol_id = i.volume_id
             backup_id = i.id
-            self.volume_backups_volume.update({backup_id : vol_id})
+            self.volume_backups_volume.update({backup_id: vol_id})
 
     def store_boot_volume_and_boot_volume_backups(self):
         for i in self.boot_volume_backups:
             vol_id = i.boot_volume_id
             backup_id = i.id
-            self.boot_volume_backups_boot_volume.update({backup_id : vol_id})
+            self.boot_volume_backups_boot_volume.update({backup_id: vol_id})
 
     def store_database_and_database_backups(self):
         for i in self.database_backups:
             db_id = i.database_id
             backup_id = i.id
-            self.database_backup_db.update({backup_id : db_id})
+            self.database_backup_db.update({backup_id: db_id})
 
     def get_volume_from_backup(self, volume_backup_id):
         try:
             return self.volume_backups_volume[volume_backup_id]
         except Exception:
-            print("Block Volume Id Incorrect")
+            print("Block Volume Backup Id Incorrect")
             print(volume_backup_id)
             raise KeyError
 
@@ -129,7 +128,7 @@ class Store:
         try:
             return self.boot_volume_backups_boot_volume[boot_volume_backup_id]
         except Exception:
-            print("Boot Volume Id Incorrect")
+            print("Boot Volume Backup Id Incorrect")
             print(boot_volume_backup_id)
             raise KeyError
 
@@ -140,10 +139,9 @@ class Store:
             print("Database Volume Id Incorrect")
             print(db_backup_id)
             raise KeyError
-            
-        
 
-    # storing the values of attached Volumes to Instance 
+    # storing the values of attached Volumes to Instance
+
     def store_attached_volume_instance(self):
         for i in self.volume_attachments:
             vol_id = i.volume_id
@@ -151,7 +149,7 @@ class Store:
             self.attached_volume.update({vol_id: inst_id})
 
     def store_attached_boot_volume_instance(self):
-        
+
         for i in self.boot_volume_attachments:
             vol_id = i.boot_volume_id
             inst_id = i.instance_id
@@ -162,11 +160,12 @@ class Store:
         try:
             tags = self.instance_tags[instance_id]
         except KeyError:
-            instance_details = self.instanceObj.get_instance_details(instance_id)
+            instance_details = self.instanceObj.get_instance_details(
+                instance_id)
             tags = dict()
             tags["defined_tags"] = instance_details.defined_tags
             tags["freeform_tags"] = instance_details.freeform_tags
-            self.instance_tags.update({instance_id:tags})
+            self.instance_tags.update({instance_id: tags})
 
     # def store_database_tags(self, db_id):
     #     try:
@@ -190,6 +189,3 @@ class Store:
             self.boot_volume_tags[boot_volume_id] = self.instance_tags[self.attached_boot_volume[boot_volume_id]]
         except KeyError:
             print("Boot Volume is not attached to any instance")
-        
-
-    
