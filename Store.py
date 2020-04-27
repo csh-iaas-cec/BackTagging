@@ -187,6 +187,7 @@ class Store:
 
     def store_boot_volume_tags(self, boot_volume_id):
         try:
+            print(self.attached_boot_volume[boot_volume_id])
             self.boot_volume_tags[boot_volume_id] = self.instance_tags[self.attached_boot_volume[boot_volume_id]]
         except KeyError:
             print("Boot Volume is not attached to any instance")
