@@ -20,6 +20,7 @@ class Tag:
             self.storeObj.store_instance_tags(i.instance_id)
             self.storeObj.store_volume_tags(i.volume_id)
         for i in self.storeObj.boot_volume_attachments:
+            self.storeObj.store_instance_tags(i.instance_id)
             self.storeObj.store_boot_volume_tags(i.boot_volume_id)
 
     
