@@ -153,6 +153,7 @@ class Store:
         for i in self.boot_volume_attachments:
             vol_id = i.boot_volume_id
             inst_id = i.instance_id
+            print(vol_id, inst_id)
             self.attached_boot_volume.update({vol_id: inst_id})
 
     # gets the instance tag and caches the instance tags to reduce number of request
