@@ -165,7 +165,7 @@ class Store:
             tags = dict()
             tags["defined_tags"] = instance_details.defined_tags
             tags["freeform_tags"] = instance_details.freeform_tags
-            print(instance_id)
+            print(instance_id, tags)
             self.instance_tags.update({instance_id: tags})
 
     # def store_database_tags(self, db_id):
@@ -187,7 +187,6 @@ class Store:
 
     def store_boot_volume_tags(self, boot_volume_id):
         try:
-            print(self.instance_tags)
             self.boot_volume_tags[boot_volume_id] = self.instance_tags[self.attached_boot_volume[boot_volume_id]]
         except KeyError:
             print("Boot Volume is not attached to any instance")
