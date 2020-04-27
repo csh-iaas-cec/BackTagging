@@ -66,6 +66,7 @@ class Tag:
     def update_tags_from_instance(self, instance_id):
         volume_ids = self.list_volumes_from_instances(instance_id)
         boot_vol_ids = self.list_boot_volumes_from_instances(instance_id)
+        print(volume_ids, boot_vol_ids)
         for id in volume_ids:
             self.update_backup_tags_from_volume(id)
         for id in boot_vol_ids:
