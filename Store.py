@@ -165,7 +165,6 @@ class Store:
             tags = dict()
             tags["defined_tags"] = instance_details.defined_tags
             tags["freeform_tags"] = instance_details.freeform_tags
-            print(instance_id, tags)
             self.instance_tags.update({instance_id: tags})
 
     # def store_database_tags(self, db_id):
