@@ -2,6 +2,15 @@ from Instance import Instance
 from Volume import Volume
 from Compartment import Compartment
 from UniqueKeyDict import UniqueKeyDict
+import logging
+import sys
+from logs import StreamToLogger
+
+sl = StreamToLogger('STDOUT', logging.INFO)
+sys.stdout = sl
+
+sl = StreamToLogger('STDERR', logging.ERROR)
+sys.stderr = sl
 
 
 class Store:
@@ -55,23 +64,25 @@ class Store:
             return self.instance_tags[instance_id]
         except KeyError as identifier:
             print(identifier)
-            print("Instance not present in the compartment")
+            # logger.error(identifier)
+            # logger.error("Instance not present in the compartment")
+            print("Instance not present in the compartment" + instance_id)
             raise
 
     def get_volume_tags(self, volume_id):
         try:
             return self.volume_tags[volume_id]
         except KeyError:
-            print("Volume Id Incorrect")
-            print(volume_id)
+            print("Volume Id Incorrect "+ volume_id)
+            # logger.error("Volume Id Incorrect")
+            # logger.error(volume_id)
             raise KeyError
 
     def get_boot_volume_tags(self, boot_volume_id):
         try:
             return self.boot_volume_tags[boot_volume_id]
         except KeyError:
-            print("Volume Id Incorrect")
-            print(boot_volume_id)
+            print("Boot Volume Id Incorrect "+boot_volume_id)
             raise KeyError
 
     # Store the volume attachments so that we no need to request
@@ -94,9 +105,6 @@ class Store:
         for i in self.volumeObj.list_boot_volume_backups(compartment_id):
             self.boot_volume_backups.append(i)
 
-    # def store_database_backups_details(self, compartment_id):
-    #     for i in self.dbObj.list_backups(compartment_id):
-    #         self.database_backups.append(i)
 
     def store_volume_and_volume_backups(self):
         for i in self.volume_backups:
@@ -120,24 +128,21 @@ class Store:
         try:
             return self.volume_backups_volume[volume_backup_id]
         except Exception:
-            print("Block Volume Backup Id Incorrect")
-            print(volume_backup_id)
+            print("Block Volume Backup Id Incorrect "+volume_backup_id)
             raise KeyError
 
     def get_boot_volume_from_backup(self, boot_volume_backup_id):
         try:
             return self.boot_volume_backups_boot_volume[boot_volume_backup_id]
         except Exception:
-            print("Boot Volume Backup Id Incorrect")
-            print(boot_volume_backup_id)
+            print("Boot Volume Backup Id Incorrect "+ boot_volume_backup_id)
             raise KeyError
 
     def get_database_from_backup(self, db_backup_id):
         try:
             return self.database_backup_db[db_backup_id]
         except Exception:
-            print("Database Volume Id Incorrect")
-            print(db_backup_id)
+            print("Database Volume Id Incorrect "+db_backup_id)
             raise KeyError
 
     # storing the values of attached Volumes to Instance
@@ -167,25 +172,16 @@ class Store:
             tags["freeform_tags"] = instance_details.freeform_tags
             self.instance_tags.update({instance_id: tags})
 
-    # def store_database_tags(self, db_id):
-    #     try:
-    #         tags = self.database_tags[db_id]
-    #     except KeyError:
-    #         db_details = self.dbObj.get_db_details(db_id)
-    #         tags = dict()
-    #         tags["defined_tags"] = db_details.defined_tags
-    #         tags["freeform_tags"] = db_details.freeform_tags
-    #         self.database_tags.update({db_id:tags})
 
     # caches the volume tags to reduce the number of request while udpating volume backup
     def store_volume_tags(self, volume_id):
         try:
             self.volume_tags[volume_id] = self.instance_tags[self.attached_volume[volume_id]]
         except KeyError:
-            print("Volume is not attached to any instance")
+            print("Volume is not attached to any instance "+volume_id)
 
     def store_boot_volume_tags(self, boot_volume_id):
         try:
             self.boot_volume_tags[boot_volume_id] = self.instance_tags[self.attached_boot_volume[boot_volume_id]]
         except KeyError:
-            print("Boot Volume is not attached to any instance")
+            print("Boot Volume is not attached to any instance "+boot_volume_id)

@@ -1,6 +1,17 @@
 import oci
 from Volume import Volume
+from Instance import Instance
 from Store import Store
+import sys
+import logging
+from logs import StreamToLogger
+
+sl = StreamToLogger('STDOUT', logging.INFO)
+sys.stdout = sl
+
+# stderr_logger = logging.getLogger('STDERR')
+sl = StreamToLogger('STDERR', logging.ERROR)
+sys.stderr = sl
 
 
 class Tag:
@@ -48,7 +59,8 @@ class Tag:
         try:
             # print(self.storeObj.attached_volume)
             volumes = [volume_id for volume_id, inst_id in self.storeObj.attached_volume.items() if inst_id == instance_id]
-        except Exception:
+        except Exception as e:
+            print(e)
             volumes = None
         return volumes
 
@@ -65,12 +77,18 @@ class Tag:
 
     # gets the volume ids and updates the volume tag
     def update_tags_from_instance(self, instance_id):
-        volume_ids = self.list_volumes_from_instances(instance_id)
-        boot_vol_ids = self.list_boot_volumes_from_instances(instance_id)
-        for id in volume_ids:
-            self.update_backup_tags_from_volume(id)
-        for id in boot_vol_ids:
-            self.update_backup_tags_from_boot_volume(id)
+        try:
+            inst = Instance()
+            inst.get_instance_details(instance_id)
+            volume_ids = self.list_volumes_from_instances(instance_id)
+            boot_vol_ids = self.list_boot_volumes_from_instances(instance_id)
+            for id in volume_ids:
+                self.update_backup_tags_from_volume(id)
+            for id in boot_vol_ids:
+                self.update_backup_tags_from_boot_volume(id)
+        except Exception as e:
+            pass
+        
 
     
 

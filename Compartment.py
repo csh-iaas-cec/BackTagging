@@ -6,10 +6,16 @@ from oci.identity import IdentityClient
 # Gets all the compartments from a tenancy
 class Compartment:
 	def __init__(self):
-		self.signer = Config.signer
-		self.config = {}
-		self.compartment_id = Config.tenancy_id
-		self.identity = IdentityClient(config = {}, signer = self.signer)
+		config = {}
+		try:
+			signer = Config.signer
+			self.identity = IdentityClient(config=config, signer=signer)
+			self.compartment_id = Config.tenancy_id
+		except Exception:
+			config = Config.config
+			self.identity = IdentityClient(config)
+			self.compartment_id = config["tenancy"]
+		
 		self.compartments = list()
 		self.availability_domain_list = list()
 		self.update_ads()

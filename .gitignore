@@ -1,5 +1,6 @@
 *.zip
-.vscode/*
 settings.json
 launch.json
-test2.py
+test*.py
+*.log
+__pycache__/*
