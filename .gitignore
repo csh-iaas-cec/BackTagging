@@ -1,6 +1,6 @@
 *.zip
 settings.json
 launch.json
-test*.py
 *.log
 __pycache__/*
+test2.py
