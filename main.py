@@ -1,6 +1,5 @@
 import os
 import argparse
-from Tag import Tag
 import configparser
 
 
@@ -23,10 +22,12 @@ if __name__ == "__main__":
                         help="Updates the boot volume and boot volume group tags from the given boot volume backup id")
     args = parser.parse_args()
     if(args.all):
+        from Tag import Tag
         tagObj = Tag()
         tagObj.update_tags_from_compartment()
     else:
         if(args.compartment_id):
+            from Tag import Tag
             compartment_id = str(args.compartment_id)
             tagObj = Tag(compartment_id)
             if(args.instance_id):
