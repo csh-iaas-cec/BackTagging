@@ -106,8 +106,8 @@ class Store:
             tags = dict()
             defined_tags = instance_details.defined_tags
             print(instance_details)
-            tags["InstanceName"] = defined_tags["Compute-Tag"].InstanceName
-            # tags["VSAD"] = instance_details.defined_tags["Compute-Tag"]["VSAD"]
+            tags["InstanceName"] = defined_tags["Compute-Tag"]["InstanceName"]
+            tags["VSAD"] = instance_details.defined_tags["Compute-Tag"]["VSAD"]
             self.instance_tags.update({instance_id: tags})
             print(tags)
 
