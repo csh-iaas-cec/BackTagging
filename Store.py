@@ -92,9 +92,9 @@ class Store:
     def store_attached_volume_instance(self):
         try:
             for i in self.volume_attachments:
-            vol_id = i.volume_id
-            inst_id = i.instance_id
-            self.attached_volume.update({vol_id: inst_id})
+                vol_id = i.volume_id
+                inst_id = i.instance_id
+                self.attached_volume.update({vol_id: inst_id})
         except Exception:
             pass
         
