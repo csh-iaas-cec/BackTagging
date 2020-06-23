@@ -109,6 +109,7 @@ class Store:
             ]
             tags["VSAD"] = instance_details.defined_tags["Compute-Tag"]["VSAD"]
             self.instance_tags.update({instance_id: tags})
+            print(tags)
 
     # caches the volume tags to reduce the number of request while udpating volume backup
     def store_volume_tags(self, volume_id):
