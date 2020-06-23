@@ -15,8 +15,8 @@ sys.stderr = sl
 
 
 class Tag:
-    def __init__(self, compartment_id=None):
-        self.storeObj = Store(compartment_id)
+    def __init__(self, compartment_id=None, instance_id=None):
+        self.storeObj = Store(compartment_id, instance_id)
         self.volumeObj = Volume()
         self.initialize()
 

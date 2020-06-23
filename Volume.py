@@ -35,40 +35,24 @@ class Volume:
             print(identifier)
             exit()
 
-    def remove_volume_tag(self, volume_id):
-        try:
-            volume_details = oci.core.models.UpdateVolumeDetails(
-                defined_tags={}, freeform_tags={}
-            )
-            self.block_storage_client.update_volume(volume_id, volume_details)
-            print("Removed Volume tags", volume_id)
-        except oci.exceptions.ServiceError as identifier:
-            print(identifier)
-            print(volume_id)
-        except Exception:
-            print("Volume is not present")
-
-    def remove_volume_backup_tag(self, volume_backup_id):
-        try:
-            volume_details = oci.core.models.UpdateVolumeBackupDetails(
-                defined_tags={}, freeform_tags={}
-            )
-            self.block_storage_client.update_volume_backup(
-                volume_backup_id, volume_details
-            )
-            print("Removed Volume Backup tags", volume_backup_id)
-        except oci.exceptions.ServiceError as identifier:
-            print(identifier)
-            print(volume_backup_id)
-        except Exception:
-            print("Volume Backup is not present")
+    
 
     # Request to update the volume tags
     def update_volume_tag(self, volume_id, tag):
-        self.remove_volume_tag(volume_id)
+        volume_detail = self.block_storage_client.get_volume(volume_id).data
+        volume_group = volume_detail.defined_tags["Block-Storage-tags"]["VolumeGroup"]
+        expiration = volume_detail.defined_tags["Block-Storage-tags"]["Expiration"]
+        tag = {
+            "Block-Storage-tags": {
+                "InstanceName": tag["InstanceName"],
+                "VSAD": tag["VSAD"],
+                "Expiration": expiration,
+                "VolumeGroup": volume_group
+            }
+        }
         try:
             volume_details = oci.core.models.UpdateVolumeDetails(
-                defined_tags=tag["defined_tags"], freeform_tags=tag["freeform_tags"]
+                defined_tags=tag
             )
             self.block_storage_client.update_volume(volume_id, volume_details)
             print("Updated Volume tags", volume_id)
@@ -80,10 +64,20 @@ class Volume:
 
     # Request to update the volume backup tags
     def update_volume_backup_tag(self, volume_backup_id, tag):
-        self.remove_volume_backup_tag(volume_backup_id)
+        volume_detail = self.block_storage_client.get_volume_backup(volume_backup_id).data
+        volume_group = volume_detail.defined_tags["Block-Storage-tags"]["VolumeGroup"]
+        expiration = volume_detail.defined_tags["Block-Storage-tags"]["Expiration"]
+        tag = {
+            "Block-Storage-tags": {
+                "InstanceName": tag["InstanceName"],
+                "VSAD": tag["VSAD"],
+                "Expiration": expiration,
+                "VolumeGroup": volume_group
+            }
+        }
         try:
             volume_backup_details = oci.core.models.UpdateVolumeBackupDetails(
-                defined_tags=tag["defined_tags"], freeform_tags=tag["freeform_tags"]
+                defined_tags=tag
             )
             self.block_storage_client.update_volume_backup(
                 volume_backup_id, volume_backup_details

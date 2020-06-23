@@ -14,7 +14,7 @@ sys.stderr = sl
 
 
 class Store:
-    def __init__(self, compartment_id=None):
+    def __init__(self, compartment_id=None, instance_id=None):
         self.volume_attachments = list()
         self.volume_backups = list()
         self.volume_backups_volume = UniqueKeyDict()
@@ -120,6 +120,3 @@ class Store:
         except KeyError:
             print("Volume is not attached to any instance " + volume_id)
 
-if __name__ == "__main__":
-    str = Store("ocid1.compartment.oc1..aaaaaaaae4364npm55dpakr5e6sfpce5su2nhj6ane27344cjsvgb2e5lkra")
-    
