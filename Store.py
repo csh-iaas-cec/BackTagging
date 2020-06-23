@@ -104,7 +104,7 @@ class Store:
         except KeyError:
             instance_details = self.instanceObj.get_instance_details(instance_id)
             tags = dict()
-            tags["InstanceName"] = instance_details.defined_tags."Compute-Tag".InstanceName
+            tags["InstanceName"] = instance_details.defined_tags["Compute-Tag"].InstanceName
             # tags["VSAD"] = instance_details.defined_tags["Compute-Tag"]["VSAD"]
             self.instance_tags.update({instance_id: tags})
             print(tags)
