@@ -67,7 +67,6 @@ class Store:
 
     # Store the volume attachments so that we no need to request
     # each time to get the list of volume attachments
-
     def store_volume_attachments(self, compartment_id):
         for i in self.instanceObj.list_volume_attachments(compartment_id):
             self.volume_attachments.append(i)
@@ -90,7 +89,6 @@ class Store:
             raise KeyError
 
     # storing the values of attached Volumes to Instance
-
     def store_attached_volume_instance(self):
         for i in self.volume_attachments:
             vol_id = i.volume_id

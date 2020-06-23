@@ -29,6 +29,7 @@ class Tag:
     def store_tags(self):
         for i in self.storeObj.volume_attachments:
             self.storeObj.store_instance_tags(i.instance_id)
+        for i in self.storeObj.volume_attachments:
             self.storeObj.store_volume_tags(i.volume_id)
 
     
@@ -58,8 +59,6 @@ class Tag:
     # gets the volume ids and updates the volume tag
     def update_tags_from_instance(self, instance_id):
         try:
-            inst = Instance()
-            inst.get_instance_details(instance_id)
             volume_ids = self.list_volumes_from_instances(instance_id)
             for id in volume_ids:
                 self.update_backup_tags_from_volume(id)
