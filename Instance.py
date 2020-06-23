@@ -52,9 +52,4 @@ class Instance:
 
     # gets the instance tag and caches the instance tags to reduce number of request
 
-    def get_instance_tags(self, instance_id):
-        instance_details = self.compute_client.get_instance(instance_id).data
-        tags = dict()
-        tags["defined_tags"] = instance_details.defined_tags
-        tags["freeform_tags"] = instance_details.freeform_tags
-        return tags
+

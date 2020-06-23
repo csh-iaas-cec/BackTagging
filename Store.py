@@ -104,10 +104,10 @@ class Store:
         except KeyError:
             instance_details = self.instanceObj.get_instance_details(instance_id)
             tags = dict()
-            tags["InstanceName"] = instance_details.defined_tags
+            tags["InstanceName"] = instance_details.defined_tags.Compute-Tag.InstanceName
             # tags["VSAD"] = instance_details.defined_tags["Compute-Tag"]["VSAD"]
             self.instance_tags.update({instance_id: tags})
-            print(instance_details.defined_tags)
+            print(tags)
 
     # caches the volume tags to reduce the number of request while udpating volume backup
     def store_volume_tags(self, volume_id):
