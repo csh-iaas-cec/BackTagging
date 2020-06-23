@@ -54,8 +54,6 @@ class Tag:
         return volumes
 
 
-    
-        
 
     # gets the volume ids and updates the volume tag
     def update_tags_from_instance(self, instance_id):
