@@ -90,10 +90,14 @@ class Store:
 
     # storing the values of attached Volumes to Instance
     def store_attached_volume_instance(self):
-        for i in self.volume_attachments:
+        try:
+            for i in self.volume_attachments:
             vol_id = i.volume_id
             inst_id = i.instance_id
             self.attached_volume.update({vol_id: inst_id})
+        except Exception:
+            pass
+        
 
     # gets the instance tag and caches the instance tags to reduce number of request
     def store_instance_tags(self, instance_id):
