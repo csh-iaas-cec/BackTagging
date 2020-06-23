@@ -35,9 +35,6 @@ class Instance:
             # logger.error(identifier.message)
             exit()
 
-    def list_boot_volume_attachments(self, ad, compartment_id):
-        return list_call_get_all_results(self.compute_client.list_boot_volume_attachments, ad,
-                                         compartment_id).data
 
     def get_instance_details(self, instance_id):
         try:

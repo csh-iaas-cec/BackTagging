@@ -16,10 +16,6 @@ if __name__ == "__main__":
                         help="Updates the volume and volume group tags from the given volume id")
     parser.add_argument('--volume_backup_id',
                         help="Updates the volume and volume group tags from the given volume backup id")
-    parser.add_argument('--boot_volume_id',
-                        help="Updates the boot volume and boot volume group tags from the given volume id")
-    parser.add_argument('--boot_volume_backup_id',
-                        help="Updates the boot volume and boot volume group tags from the given boot volume backup id")
     args = parser.parse_args()
     if(args.all):
         from Tag import Tag
@@ -36,15 +32,9 @@ if __name__ == "__main__":
             elif(args.volume_id):
                 volume_id = args.volume_id
                 tagObj.update_backup_tags_from_volume(volume_id)
-            elif(args.boot_volume_id):
-                volume_id = args.boot_volume_id
-                tagObj.update_backup_tags_from_boot_volume(volume_id)
             elif(args.volume_backup_id):
                 volume_backup_id = args.volume_backup_id
                 tagObj.update_tags_from_block_volume_backup(volume_backup_id)
-            elif(args.boot_volume_backup_id):
-                volume_backup_id = args.boot_volume_backup_id
-                tagObj.update_tags_from_boot_volume_backup(volume_backup_id)
             else:
                 tagObj.update_tags_from_compartment()
         else:
