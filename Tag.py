@@ -31,6 +31,7 @@ class Tag:
             self.storeObj.store_instance_tags(i.instance_id)
         for i in self.storeObj.volume_attachments:
             self.storeObj.store_volume_tags(i.volume_id)
+        print(self.storeObj.volume_attachments)
 
     
 
