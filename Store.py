@@ -43,28 +43,6 @@ class Store:
         self.store_volume_and_volume_backups()
         self.store_attached_volume_instance()
 
-    def get_attached_volume(self):
-        return self.attached_volume
-
-    def get_instance_tags(self, instance_id):
-        try:
-            return self.instance_tags[instance_id]
-        except KeyError as identifier:
-            print(identifier)
-            # logger.error(identifier)
-            # logger.error("Instance not present in the compartment")
-            print("Instance not present in the compartment" + instance_id)
-            raise
-
-    def get_volume_tags(self, volume_id):
-        try:
-            return self.volume_tags[volume_id]
-        except KeyError:
-            print("Volume Id Incorrect " + volume_id)
-            # logger.error("Volume Id Incorrect")
-            # logger.error(volume_id)
-            raise KeyError
-
     # Store the volume attachments so that we no need to request
     # each time to get the list of volume attachments
     def store_volume_attachments(self, compartment_id):
@@ -81,13 +59,6 @@ class Store:
             backup_id = i.id
             self.volume_backups_volume.update({backup_id: vol_id})
 
-    def get_volume_from_backup(self, volume_backup_id):
-        try:
-            return self.volume_backups_volume[volume_backup_id]
-        except Exception:
-            print("Block Volume Backup Id Incorrect " + volume_backup_id)
-            raise KeyError
-
     # storing the values of attached Volumes to Instance
     def store_attached_volume_instance(self):
         try:
@@ -95,8 +66,40 @@ class Store:
                 vol_id = i.volume_id
                 inst_id = i.instance_id
                 self.attached_volume.update({vol_id: inst_id})
+        except Exception as e:
+            print(e)
+
+    def get_attached_volume(self):
+        return self.attached_volume
+
+    def get_instance_tags(self, instance_id):
+        try:
+            return self.instance_tags[instance_id]
+        except KeyError as identifier:
+            print(identifier)
+            print("Instance not present in the compartment" + instance_id)
+            raise
+
+    def get_volume_tags(self, volume_id):
+        try:
+            return self.volume_tags[volume_id]
+        except KeyError:
+            print("Volume Id Incorrect " + volume_id)
+            # logger.error("Volume Id Incorrect")
+            # logger.error(volume_id)
+            raise KeyError
+
+    
+    
+
+    def get_volume_from_backup(self, volume_backup_id):
+        try:
+            return self.volume_backups_volume[volume_backup_id]
         except Exception:
-            pass
+            print("Block Volume Backup Id Incorrect " + volume_backup_id)
+            raise KeyError
+
+    
         
 
     # gets the instance tag and caches the instance tags to reduce number of request
@@ -104,6 +107,7 @@ class Store:
         try:
             tags = self.instance_tags[instance_id]
         except KeyError:
+            print(self.attached_volume)
             instance_details = self.instanceObj.get_instance_details(instance_id)
             tags = dict()
             defined_tags = instance_details.defined_tags

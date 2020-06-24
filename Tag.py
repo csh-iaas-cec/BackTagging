@@ -29,8 +29,10 @@ class Tag:
     def store_tags(self):
         for i in self.storeObj.volume_attachments:
             self.storeObj.store_instance_tags(i.instance_id)
+        print(self.storeObj.instance_tags)
         for i in self.storeObj.volume_attachments:
             self.storeObj.store_volume_tags(i.volume_id)
+        print(self.storeObj.volume_tags)
 
     
 
