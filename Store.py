@@ -6,11 +6,11 @@ import logging
 import sys
 from logs import StreamToLogger
 
-# sl = StreamToLogger("STDOUT", logging.INFO)
-# sys.stdout = sl
+sl = StreamToLogger("STDOUT", logging.INFO)
+sys.stdout = sl
 
-# sl = StreamToLogger("STDERR", logging.ERROR)
-# sys.stderr = sl
+sl = StreamToLogger("STDERR", logging.ERROR)
+sys.stderr = sl
 
 
 class Store:

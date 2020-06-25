@@ -5,12 +5,12 @@ import sys
 import Config
 from logs import StreamToLogger
 import logging
-# sl = StreamToLogger('STDOUT', logging.INFO)
-# sys.stdout = sl
+sl = StreamToLogger('STDOUT', logging.INFO)
+sys.stdout = sl
 
-# # stderr_logger = logging.getLogger('STDERR')
-# sl = StreamToLogger('STDERR', logging.ERROR)
-# sys.stderr = sl
+# stderr_logger = logging.getLogger('STDERR')
+sl = StreamToLogger('STDERR', logging.ERROR)
+sys.stderr = sl
 
 
 class Instance:

@@ -6,12 +6,12 @@ import sys
 import logging
 from logs import StreamToLogger
 
-# sl = StreamToLogger('STDOUT', logging.INFO)
-# sys.stdout = sl
+sl = StreamToLogger('STDOUT', logging.INFO)
+sys.stdout = sl
 
-# # stderr_logger = logging.getLogger('STDERR')
-# sl = StreamToLogger('STDERR', logging.ERROR)
-# sys.stderr = sl
+# stderr_logger = logging.getLogger('STDERR')
+sl = StreamToLogger('STDERR', logging.ERROR)
+sys.stderr = sl
 
 
 class Tag:
