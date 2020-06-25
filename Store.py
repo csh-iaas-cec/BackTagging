@@ -6,15 +6,15 @@ import logging
 import sys
 from logs import StreamToLogger
 
-sl = StreamToLogger("STDOUT", logging.INFO)
-sys.stdout = sl
+# sl = StreamToLogger("STDOUT", logging.INFO)
+# sys.stdout = sl
 
-sl = StreamToLogger("STDERR", logging.ERROR)
-sys.stderr = sl
+# sl = StreamToLogger("STDERR", logging.ERROR)
+# sys.stderr = sl
 
 
 class Store:
-    def __init__(self, compartment_id=None, instance_id=None):
+    def __init__(self, compartment_id=None):
         self.volume_attachments = list()
         self.volume_backups = list()
         self.volume_backups_volume = UniqueKeyDict()
@@ -47,11 +47,13 @@ class Store:
     # each time to get the list of volume attachments
     def store_volume_attachments(self, compartment_id):
         for i in self.instanceObj.list_volume_attachments(compartment_id):
-            self.volume_attachments.append(i)
+            if(i.lifecycle_state=="ATTACHED"):
+                self.volume_attachments.append(i)
 
     def store_volume_backups_details(self, compartment_id):
         for i in self.volumeObj.list_volume_backups(compartment_id):
             self.volume_backups.append(i)
+        
 
     def store_volume_and_volume_backups(self):
         for i in self.volume_backups:
@@ -89,25 +91,19 @@ class Store:
             # logger.error(volume_id)
             raise KeyError
 
-    
-    
-
     def get_volume_from_backup(self, volume_backup_id):
         try:
             return self.volume_backups_volume[volume_backup_id]
         except Exception:
             print("Block Volume Backup Id Incorrect " + volume_backup_id)
             raise KeyError
-
-    
-        
+      
 
     # gets the instance tag and caches the instance tags to reduce number of request
     def store_instance_tags(self, instance_id):
         try:
             tags = self.instance_tags[instance_id]
         except KeyError:
-            print(self.attached_volume)
             instance_details = self.instanceObj.get_instance_details(instance_id)
             tags = dict()
             defined_tags = instance_details.defined_tags
