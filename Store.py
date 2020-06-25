@@ -104,12 +104,17 @@ class Store:
         try:
             tags = self.instance_tags[instance_id]
         except KeyError:
-            instance_details = self.instanceObj.get_instance_details(instance_id)
-            tags = dict()
-            defined_tags = instance_details.defined_tags
-            tags["InstanceName"] = defined_tags["Compute-Tag"]["InstanceName"]
-            tags["VSAD"] = instance_details.defined_tags["Compute-Tag"]["VSAD"]
-            self.instance_tags.update({instance_id: tags})
+            try:
+                instance_details = self.instanceObj.get_instance_details(instance_id)
+                tags = dict()
+                defined_tags = instance_details.defined_tags
+                tags["InstanceName"] = defined_tags["Compute-Tag"]["InstanceName"]
+                tags["VSAD"] = instance_details.defined_tags["Compute-Tag"]["VSAD"]
+                self.instance_tags.update({instance_id: tags})
+            except KeyError:
+                print("Compute-tags not declared", instance_id)
+            
+            
 
     # caches the volume tags to reduce the number of request while udpating volume backup
     def store_volume_tags(self, volume_id):

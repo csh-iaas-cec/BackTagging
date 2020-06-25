@@ -46,7 +46,7 @@ class Tag:
         try:
             self.volumeObj.update_volume_tag(volume_id, self.storeObj.get_volume_tags(volume_id))
         except Exception:
-            raise KeyError
+            pass
 
     def update_volume_backup_tag(self, volume_backup_id, tag):
         self.volumeObj.update_volume_backup_tag(volume_backup_id, tag)
@@ -67,6 +67,10 @@ class Tag:
             # print("Kishore")
 
     def update_tags_from_compartment(self):
-        for volume_id in self.storeObj.attached_volume.keys():
-            self.update_volume_tag(volume_id)
-            self.update_backup_tags_from_volume(volume_id)
+        try:
+            for volume_id in self.storeObj.attached_volume.keys():
+                self.update_volume_tag(volume_id)
+                self.update_backup_tags_from_volume(volume_id)
+        except Exception as e:
+            print(e)
+        
