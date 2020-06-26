@@ -41,27 +41,18 @@ class Volume:
     def update_volume_tag(self, volume_id, tag):
         try:
             volume_detail = self.block_storage_client.get_volume(volume_id).data
-            volume_group = volume_detail.defined_tags["Block-Storage-tags"]["VolumeGroup"]
-            expiration = volume_detail.defined_tags["Block-Storage-tags"]["Expiration"]
-            tag = {
-                "Block-Storage-tags": {
-                    "InstanceName": tag["InstanceName"],
-                    "VSAD": tag["VSAD"],
-                    "Expiration": expiration,
-                    "VolumeGroup": volume_group
-                }
-            }
+            tags = volume_detail.defined_tags
+            tags["Block-Storage-tags"]["InstanceName"] = tag["InstanceName"]
+            tags["Block-Storage-tags"]["VSAD"] = tag["VSAD"]
         
             volume_details = oci.core.models.UpdateVolumeDetails(
-                defined_tags=tag
+                defined_tags=tags
             )
             self.block_storage_client.update_volume(volume_id, volume_details)
             print("Updated Volume tags", volume_id)
         except KeyError:
             if(volume_detail.lifecycle_state == "TERMINATED"):
                 pass
-            else:
-                print("Block-Storage-tags not declared", volume_backup_id)
         except oci.exceptions.ServiceError as identifier:
             if(identifier.status == 400):
                 print(volume_id+" already updated")
@@ -74,18 +65,11 @@ class Volume:
     def update_volume_backup_tag(self, volume_backup_id, tag):
         try:
             volume_detail = self.block_storage_client.get_volume_backup(volume_backup_id).data
-            volume_group = volume_detail.defined_tags["Block-Storage-tags"]["VolumeGroup"]
-            expiration = volume_detail.defined_tags["Block-Storage-tags"]["Expiration"]
-            tag = {
-                "Block-Storage-tags": {
-                    "InstanceName": tag["InstanceName"],
-                    "VSAD": tag["VSAD"],
-                    "Expiration": expiration,
-                    "VolumeGroup": volume_group
-                }
-            }
+            tags = volume_detail.defined_tags
+            tags["Block-Storage-tags"]["InstanceName"] = tag["InstanceName"]
+            tags["Block-Storage-tags"]["VSAD"] = tag["VSAD"]
             volume_backup_details = oci.core.models.UpdateVolumeBackupDetails(
-                defined_tags=tag
+                defined_tags=tags
             )
             self.block_storage_client.update_volume_backup(
                 volume_backup_id, volume_backup_details
@@ -94,9 +78,6 @@ class Volume:
         except KeyError:
             if(volume_detail.lifecycle_state == "TERMINATED"):
                 pass
-            else:
-                print("Block-Storage-tags not declared", volume_backup_id)
-   
         except oci.exceptions.ServiceError as identifier:
             if(identifier.status == 400):
                 print(volume_backup_id+" already updated")

@@ -36,7 +36,7 @@ class Tag:
             volume_backups = [backup_id for backup_id, vol_id in self.storeObj.volume_backups_volume.items() if vol_id==volume_id]
             # print(self.storeObj.volume_backups_volume)
         except Exception:
-            print("No backups")
+            logging.error("No backups")
             volume_backups = None
         return volume_backups
 
