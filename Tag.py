@@ -23,7 +23,6 @@ class Tag:
     def store_tags(self):
         for i in self.storeObj.volume_attachments:
             self.storeObj.store_instance_tags(i.instance_id)
-        for i in self.storeObj.volume_attachments:
             self.storeObj.store_volume_tags(i.volume_id)
 
     def list_backups_from_volume(self, volume_id):
