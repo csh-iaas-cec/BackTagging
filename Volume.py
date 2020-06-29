@@ -39,7 +39,6 @@ class Volume:
             temp["InstanceName"] = tag["InstanceName"]
             temp["VSAD"] = tag["VSAD"]
             tags["Block-Storage-tags"] = temp
-            logging.info(volume_detail.defined_tags)
             if(volume_detail.lifecycle_state == "TERMINATED"):
                 logging.warning("Already terminated "+" "+volume_id)
             else:
