@@ -22,6 +22,7 @@ class Store:
         self.compartment_list = list()
         self.compartment_obj = Compartment()
         self.initialize()
+        logging.info("VERSION 1.1")
 
     def update_compartment_list(self):
         if self.compartment_id:
