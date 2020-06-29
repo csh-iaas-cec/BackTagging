@@ -4,14 +4,9 @@ from Instance import Instance
 from Store import Store
 import sys
 import logging
-from logs import StreamToLogger
+import logs
 
-sl = StreamToLogger('STDOUT', logging.INFO)
-sys.stdout = sl
 
-# stderr_logger = logging.getLogger('STDERR')
-sl = StreamToLogger('STDERR', logging.ERROR)
-sys.stderr = sl
 
 
 class Tag:
@@ -45,8 +40,8 @@ class Tag:
     def update_volume_tag(self, volume_id):
         try:
             self.volumeObj.update_volume_tag(volume_id, self.storeObj.get_volume_tags(volume_id))
-        except Exception:
-            pass
+        except Exception as e:
+            logging.error(volume_id+" "+e)
 
     def update_volume_backup_tag(self, volume_backup_id, tag):
         self.volumeObj.update_volume_backup_tag(volume_backup_id, tag)
@@ -55,7 +50,8 @@ class Tag:
     def get_volume_from_backup(self, volume_backup_id):
         try:
             return self.storeObj.get_volume_from_backup(volume_backup_id)
-        except Exception:
+        except Exception as e:
+            logging.error(volume_backup_id+" "+e)
             raise KeyError
 
     def update_backup_tags_from_volume(self, volume_id):
@@ -63,8 +59,7 @@ class Tag:
             for backup_id in self.list_backups_from_volume(volume_id):
                 self.update_volume_backup_tag(backup_id, self.storeObj.get_volume_tags(volume_id))
         except Exception as e:
-            print(e)
-            # print("Kishore")
+            logging.error(volume_id+" "+e)
 
     def update_tags_from_compartment(self):
         try:
@@ -72,5 +67,5 @@ class Tag:
                 self.update_volume_tag(volume_id)
                 self.update_backup_tags_from_volume(volume_id)
         except Exception as e:
-            print(e)
+            logging.error(e)
         

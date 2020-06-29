@@ -3,15 +3,7 @@ from oci.pagination import list_call_get_all_results
 import Config
 import sys
 import logging
-from logs import StreamToLogger
-
-sl = StreamToLogger("STDOUT", logging.INFO)
-sys.stdout = sl
-
-# stderr_logger = logging.getLogger('STDERR')
-sl = StreamToLogger("STDERR", logging.ERROR)
-sys.stderr = sl
-
+import logs
 
 class Volume:
     def __init__(self):
@@ -32,7 +24,7 @@ class Volume:
                 self.block_storage_client.list_volume_backups, compartment_id
             ).data
         except oci.exceptions.ServiceError as identifier:
-            print(identifier)
+            logging.error(identifier+" "+compartment_id)
             exit()
 
     
@@ -49,17 +41,17 @@ class Volume:
                 defined_tags=tags
             )
             self.block_storage_client.update_volume(volume_id, volume_details)
-            print("Updated Volume tags", volume_id)
+            logging.info("Updated Volume tags", volume_id)
         except KeyError:
             if(volume_detail.lifecycle_state == "TERMINATED"):
-                pass
+                logging.warning("Already terminated "+" "+volume_id)
         except oci.exceptions.ServiceError as identifier:
             if(identifier.status == 400):
-                print(volume_id+" already updated")
+                logging.warning(volume_id+" already updated")
             else:
-                print(identifier)
+                logging.warning(identifier+" "+volume_id)
         except Exception:
-            print("Volume is not present")
+            logging.error("Volume is not present "+" "+ volume_id)
 
     # Request to update the volume backup tags
     def update_volume_backup_tag(self, volume_backup_id, tag):
@@ -74,14 +66,14 @@ class Volume:
             self.block_storage_client.update_volume_backup(
                 volume_backup_id, volume_backup_details
             )
-            print("Updated Volume Backup tags", volume_backup_id)
+            logging.info("Updated Volume Backup tags"+" "+ volume_backup_id)
         except KeyError:
             if(volume_detail.lifecycle_state == "TERMINATED"):
-                pass
+                logging.warning("Already terminated "+" "+ volume_backup_id)
         except oci.exceptions.ServiceError as identifier:
             if(identifier.status == 400):
-                print(volume_backup_id+" already updated")
+                logging.warning(volume_backup_id+" already updated")
             else:
-                print(identifier)
+                logging.error(identifier, volume_backup_id)
         except Exception:
-            print("Volume Backup is not present")
+            logging.error("Volume Backup is not present "+" "+ volume_backup_id)

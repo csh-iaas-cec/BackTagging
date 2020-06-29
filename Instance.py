@@ -3,15 +3,8 @@ from oci.exceptions import ServiceError
 from oci.pagination import list_call_get_all_results
 import sys
 import Config
-from logs import StreamToLogger
 import logging
-sl = StreamToLogger('STDOUT', logging.INFO)
-sys.stdout = sl
-
-# stderr_logger = logging.getLogger('STDERR')
-sl = StreamToLogger('STDERR', logging.ERROR)
-sys.stderr = sl
-
+import logs
 
 class Instance:
     def __init__(self):
@@ -31,7 +24,7 @@ class Instance:
             return list_call_get_all_results(self.compute_client.list_volume_attachments,
                                              compartment_id).data
         except ServiceError as identifier:
-            print(identifier)
+            logging.error(identifier+" "+compartment_id)
             # logger.error(identifier.message)
             exit()
 
@@ -41,10 +34,10 @@ class Instance:
             instance_data = self.compute_client.get_instance(instance_id).data
         except Exception as e:
             if(e.status == 404):
-                print(f"Instance Id {instance_id} is incorrect; Status: 404")
+                logging.error(f"Instance Id {instance_id} is incorrect; Status: 404")
                 # logger.error(f"Instance Id {instance_id} is incorrect; Status: 404")
             else:
-                print(f"Not authorized for {instance_id}; Status: {str(e.status)}")
+                logging.error(f"Not authorized for {instance_id}; Status: {str(e.status)}")
                 # logger.error(f"Not authorized for {instance_id}; Status: {str(e.status)}")
 
             raise

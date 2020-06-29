@@ -4,13 +4,8 @@ from Compartment import Compartment
 from UniqueKeyDict import UniqueKeyDict
 import logging
 import sys
-from logs import StreamToLogger
-
-sl = StreamToLogger("STDOUT", logging.INFO)
-sys.stdout = sl
-
-sl = StreamToLogger("STDERR", logging.ERROR)
-sys.stderr = sl
+import logs
+import oci
 
 
 class Store:
@@ -42,18 +37,19 @@ class Store:
             self.store_volume_backups_details(i)
         self.store_volume_and_volume_backups()
         self.store_attached_volume_instance()
+        logging.info(self.volume_backups_volume)
+        logging.info(self.attached_volume)
 
     # Store the volume attachments so that we no need to request
     # each time to get the list of volume attachments
     def store_volume_attachments(self, compartment_id):
         for i in self.instanceObj.list_volume_attachments(compartment_id):
-            if(i.lifecycle_state=="ATTACHED"):
+            if i.lifecycle_state == "ATTACHED":
                 self.volume_attachments.append(i)
 
     def store_volume_backups_details(self, compartment_id):
         for i in self.volumeObj.list_volume_backups(compartment_id):
             self.volume_backups.append(i)
-        
 
     def store_volume_and_volume_backups(self):
         for i in self.volume_backups:
@@ -69,7 +65,7 @@ class Store:
                 inst_id = i.instance_id
                 self.attached_volume.update({vol_id: inst_id})
         except Exception as e:
-            print(e)
+            logging.error(e)
 
     def get_attached_volume(self):
         return self.attached_volume
@@ -78,15 +74,15 @@ class Store:
         try:
             return self.instance_tags[instance_id]
         except KeyError as identifier:
-            print(identifier)
-            print("Instance not present in the compartment" + instance_id)
+            logging.error(identifier)
+            logging.error("Instance not present in the compartment" + instance_id)
             raise
 
     def get_volume_tags(self, volume_id):
         try:
             return self.volume_tags[volume_id]
         except KeyError:
-            print("Volume Id Incorrect " + volume_id)
+            logging.error("Volume Id Incorrect " + volume_id)
             # logger.error("Volume Id Incorrect")
             # logger.error(volume_id)
             raise KeyError
@@ -95,9 +91,8 @@ class Store:
         try:
             return self.volume_backups_volume[volume_backup_id]
         except Exception:
-            print("Block Volume Backup Id Incorrect " + volume_backup_id)
+            logging.error("Block Volume Backup Id Incorrect " + volume_backup_id)
             raise KeyError
-      
 
     # gets the instance tag and caches the instance tags to reduce number of request
     def store_instance_tags(self, instance_id):
@@ -112,9 +107,7 @@ class Store:
                 tags["VSAD"] = instance_details.defined_tags["Compute-Tag"]["VSAD"]
                 self.instance_tags.update({instance_id: tags})
             except KeyError:
-                print("Compute-tags not declared", instance_id)
-            
-            
+                logging.error("Compute-tags not declared", instance_id)
 
     # caches the volume tags to reduce the number of request while udpating volume backup
     def store_volume_tags(self, volume_id):
@@ -123,5 +116,5 @@ class Store:
                 self.attached_volume[volume_id]
             ]
         except KeyError:
-            print("Volume is not attached to any instance " + volume_id)
+            logging.error("Volume is not attached to any instance " + volume_id)
 
