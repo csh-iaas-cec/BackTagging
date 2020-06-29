@@ -34,23 +34,20 @@ class Volume:
         try:
             
             volume_detail = self.block_storage_client.get_volume(volume_id).data
-            logging.info("KIshore")
             tags = volume_detail.defined_tags
             temp = dict()
             temp["InstanceName"] = tag["InstanceName"]
             temp["VSAD"] = tag["VSAD"]
             tags["Block-Storage-tags"] = temp
             logging.info(volume_detail.defined_tags)
-
-            volume_details = oci.core.models.UpdateVolumeDetails(
-                defined_tags=tags
-            )
-            self.block_storage_client.update_volume(volume_id, volume_details)
-            logging.info("Updated Volume tags", volume_id)
-        except KeyError as e:
             if(volume_detail.lifecycle_state == "TERMINATED"):
                 logging.warning("Already terminated "+" "+volume_id)
-            logging.error(e)
+            else:
+                volume_details = oci.core.models.UpdateVolumeDetails(
+                    defined_tags=tags
+                )
+                self.block_storage_client.update_volume(volume_id, volume_details)
+                logging.info("Updated Volume tags", volume_id)
         except oci.exceptions.ServiceError as identifier:
             if(identifier.status == 400):
                 logging.warning(volume_id+" already updated")
@@ -71,14 +68,13 @@ class Volume:
             volume_backup_details = oci.core.models.UpdateVolumeBackupDetails(
                 defined_tags=tags
             )
-            self.block_storage_client.update_volume_backup(
-                volume_backup_id, volume_backup_details
-            )
-            logging.info("Updated Volume Backup tags"+" "+ volume_backup_id)
-        except KeyError as e:
             if(volume_detail.lifecycle_state == "TERMINATED"):
                 logging.warning("Already terminated "+" "+ volume_backup_id)
-            logging.error(e)
+            else:
+                self.block_storage_client.update_volume_backup(
+                    volume_backup_id, volume_backup_details
+                )
+                logging.info("Updated Volume Backup tags"+" "+ volume_backup_id)
         except oci.exceptions.ServiceError as identifier:
             if(identifier.status == 400):
                 logging.warning(volume_backup_id+" already updated")
